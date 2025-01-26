@@ -1,7 +1,7 @@
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import * as fsUtils from "../utils/firebaseTestUtils";
-import { firebaseConfig } from "../../config/firebaseConfig";
+import { firebaseConfig } from "../config/firebaseConfig";
 
 let testEnv: RulesTestEnvironment;
 
