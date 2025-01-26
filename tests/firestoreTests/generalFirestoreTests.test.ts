@@ -1,6 +1,6 @@
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
-import * as fsUtils from "../utils/firebaseTestUtils";
+import { fbTestUtils } from "../utils/firebaseTestUtils";
 import { firebaseConfig } from "../config/firebaseConfig";
 
 let testEnv: RulesTestEnvironment;
@@ -9,8 +9,8 @@ const randomCollectionName = "randomCollection";
 
 describe("firestore rules for a randomCollection", () => {
   beforeAll(async () => {
-    fsUtils.setDefaultLogLevel();
-    testEnv = await fsUtils.createTestEnvironment({
+    fbTestUtils.setDefaultLogLevel();
+    testEnv = await fbTestUtils.createTestEnvironment({
       projectId: firebaseConfig.projectId,
     });
   });
@@ -31,8 +31,8 @@ describe("firestore rules for a randomCollection", () => {
     const docRef = doc(unauthedDb, randomCollectionName, "id1");
 
     const promises = [
-      fsUtils.isRequestGranted(getDoc(docRef)),
-      fsUtils.isRequestDenied(getDoc(docRef)),
+      fbTestUtils.isRequestGranted(getDoc(docRef)),
+      fbTestUtils.isRequestDenied(getDoc(docRef)),
     ];
     const results = await Promise.all(promises);
     const isAllDenied = results.every((x) => x.permissionDenied);
@@ -47,8 +47,8 @@ describe("firestore rules for a randomCollection", () => {
     const unauthedDb = testEnv.unauthenticatedContext().firestore();
     const docRef = doc(unauthedDb, randomCollectionName, "id1");
     const promises = [
-      fsUtils.isRequestGranted(setDoc(docRef, { some: "data2" })),
-      fsUtils.isRequestDenied(setDoc(docRef, { some: "data2" })),
+      fbTestUtils.isRequestGranted(setDoc(docRef, { some: "data2" })),
+      fbTestUtils.isRequestDenied(setDoc(docRef, { some: "data2" })),
     ];
     const results = await Promise.all(promises);
     const isAllDenied = results.every((x) => x.permissionDenied);
@@ -69,12 +69,12 @@ describe("firestore rules for a randomCollection", () => {
     const docRef = doc(unauthedDb, randomCollectionName, "id1");
 
     const promises = [
-      fsUtils.isRequestGranted(setDoc(docRef, { some: "data2" })),
-      fsUtils.isRequestGranted(
+      fbTestUtils.isRequestGranted(setDoc(docRef, { some: "data2" })),
+      fbTestUtils.isRequestGranted(
         setDoc(docRef, { more: "data" }, { merge: true })
       ),
-      fsUtils.isRequestDenied(setDoc(docRef, { some: "data2" })),
-      fsUtils.isRequestDenied(
+      fbTestUtils.isRequestDenied(setDoc(docRef, { some: "data2" })),
+      fbTestUtils.isRequestDenied(
         setDoc(docRef, { more: "data" }, { merge: true })
       ),
     ];
@@ -96,8 +96,8 @@ describe("firestore rules for a randomCollection", () => {
     const unauthedDb = testEnv.unauthenticatedContext().firestore();
     const docRef = doc(unauthedDb, randomCollectionName, "id1");
     const promises = [
-      fsUtils.isRequestDenied(deleteDoc(docRef)),
-      fsUtils.isRequestGranted(deleteDoc(docRef)),
+      fbTestUtils.isRequestDenied(deleteDoc(docRef)),
+      fbTestUtils.isRequestGranted(deleteDoc(docRef)),
     ];
 
     const results = await Promise.all(promises);

@@ -11,7 +11,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { z } from "zod";
-import { isRequestGranted } from "./firebaseTestUtils";
+import { fbTestUtils } from "../firebaseTestUtils";
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
 
 export type TDb = ReturnType<
@@ -122,26 +122,26 @@ export const createTestSdk = <T1 extends { id: string }>(x: {
 }) => ({
   addDoc: (p: { db: TDb; data: T1 }) => {
     const collRef = collection(p.db, x.collectionName, p.data.id);
-    return isRequestGranted(addDoc(collRef, p.data));
+    return fbTestUtils.isRequestGranted(addDoc(collRef, p.data));
   },
   setDoc: (p: { db: TDb; data: T1; id?: string }) => {
     const docRef = doc(p.db, x.collectionName, p.id ? p.id : p.data.id);
-    return isRequestGranted(setDoc(docRef, p.data));
+    return fbTestUtils.isRequestGranted(setDoc(docRef, p.data));
   },
   updateDoc: (p: { db: TDb; data: T1 }) => {
     const docRef = doc(p.db, x.collectionName, p.data.id);
-    return isRequestGranted(updateDoc(docRef, p.data));
+    return fbTestUtils.isRequestGranted(updateDoc(docRef, p.data));
   },
   getDoc: (p: { db: TDb; id: string }) => {
     const docRef = doc(p.db, x.collectionName, p.id);
-    return isRequestGranted(getDoc(docRef));
+    return fbTestUtils.isRequestGranted(getDoc(docRef));
   },
   deleteDoc: (p: { db: TDb; id: string }) => {
     const docRef = doc(p.db, x.collectionName, p.id);
-    return isRequestGranted(deleteDoc(docRef));
+    return fbTestUtils.isRequestGranted(deleteDoc(docRef));
   },
   getDocs: (p: { db: TDb; queryConstraints: QueryConstraint[] }) => {
     const q = query(collection(p.db, x.collectionName), ...p.queryConstraints);
-    return isRequestGranted(getDocs(q));
+    return fbTestUtils.isRequestGranted(getDocs(q));
   },
 });

@@ -1,6 +1,6 @@
 import { doc, getDoc } from "@firebase/firestore";
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
-import * as fbTestUtils from "@/utils/firebaseTestUtils";
+import { fbTestUtils } from "@/utils/firebaseTestUtils";
 import { functionsSdk } from "../functionsSdk/functionsSdk";
 import { firebaseConfig } from "../config/firebaseConfig";
 

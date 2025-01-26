@@ -19,7 +19,7 @@ export const createTestEnvironment = async (p: { projectId: string }) => {
     projectId: p.projectId,
     firestore: {
       rules: readFileSync(
-        path.resolve(__dirname, "../../firebase/firestore/firestore.rules"),
+        path.resolve(__dirname, "../../../firebase/firestore/firestore.rules"),
         "utf8"
       ),
       host: "127.0.0.1",
