@@ -15,12 +15,10 @@ describe("createTestDocRouteTests", () => {
   beforeAll(async () => {
     fbTestUtils.setDefaultLogLevel();
     testEnv = await fbTestUtils.createTestEnvironment({ projectId: firebaseConfig.projectId });
+    await testEnv.clearFirestore();
   });
-  beforeEach(async () => {
-    // await testEnv.clearFirestore();
-  });
+  beforeEach(async () => {});
   afterAll(async () => {
-    // await testEnv.clearFirestore();
     await testEnv.cleanup();
   });
   it("routeHandler should return a success response and create a testDoc", async () => {

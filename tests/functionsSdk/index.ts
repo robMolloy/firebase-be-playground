@@ -1,7 +1,5 @@
-import { createStripePaymentIntent } from "./createStripePaymentIntent";
-import { createStripePaymentIntentAndDoc } from "./createStripePaymentIntentAndDoc";
+import { createTestDoc } from "./createTestDocFunctionSdk";
 
 export const functionsSdk = {
-  createStripePaymentIntent,
-  createStripePaymentIntentAndDoc,
+  createTestDoc,
 };
