@@ -5,6 +5,7 @@ import { firebaseConfig } from "../../config/firebaseConfig";
 import * as routes from "../../routes";
 import { createTestDocRouteHandler } from "../../routes/routeHandlers/createTestDocRouteHandler";
 import { fbTestUtils } from "../firebaseTestUtils";
+import { v4 } from "uuid";
 
 let testEnv: RulesTestEnvironment;
 
@@ -23,14 +24,14 @@ describe("createTestDocRouteTests", () => {
     await testEnv.cleanup();
   });
   it("routeHandler should return a success response and create a testDoc", async () => {
-    const resp = await createTestDocRouteHandler({ admin, data: { id: "id123", amount: 10 } });
+    const resp = await createTestDocRouteHandler({ admin, data: { id: `id-${v4()}`, amount: 10 } });
 
     expect(resp.success).toBe(true);
   });
   it("route should return a success response and create a testDoc", async () => {
     const wrappedCreateTestDocRoute = test.wrap(routes.createTestDocRoute);
     const resp = await wrappedCreateTestDocRoute({
-      data: { id: "id123", amount: 10 },
+      data: { id: `id-${v4()}`, amount: 10 },
       // @ts-ignore
       auth: { uid: "test123" },
     });

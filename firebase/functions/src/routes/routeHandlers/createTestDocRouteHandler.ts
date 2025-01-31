@@ -8,8 +8,5 @@ export const createTestDocRouteHandler = (p: {
   admin: typeof admin;
   data: z.infer<typeof requestDataSchema>;
 }) => {
-  return adminFirestoreSdk.createTestDoc({
-    admin: admin,
-    data: { id: "id123", amount: 10 },
-  });
+  return adminFirestoreSdk.createTestDoc({ admin: admin, data: p.data });
 };

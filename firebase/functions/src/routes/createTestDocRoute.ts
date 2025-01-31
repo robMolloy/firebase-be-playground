@@ -13,8 +13,5 @@ export const createTestDocRoute = onCall(async (request) => {
     });
   if (!request.auth?.uid) return fail({ error: { message: "user must be authenticated" } });
 
-  return adminFirestoreSdk.createTestDoc({
-    admin: admin,
-    data: { id: "id123", amount: 0 },
-  });
+  return adminFirestoreSdk.createTestDoc({ admin: admin, data: parseResponse.data });
 });
