@@ -1,58 +1,40 @@
-import admin from "firebase-admin";
+import adminSdk from "firebase-admin";
 import z from "zod";
-import { fail, success, TSuccessOrFail } from "../utils/devUtils";
+import { fail, success } from "../utils/devUtils";
 import { timestampSchema } from "./adminFirestoreUtils";
+import { adminCreatifyDoc } from "../utils/firestoreUtils";
 
-export const paymentIntentDocSchema = z.object({
+const collectionNames = { testDocs: "testDocs" };
+
+export const testDocSchema = z.object({
   id: z.string(),
-  uid: z.string(),
+  amount: z.number(),
   createdAt: timestampSchema,
   updatedAt: timestampSchema,
 });
-export const paymentProcessedDocSchema = paymentIntentDocSchema.extend({
-  processedAt: timestampSchema,
-});
+export type TTestDoc = z.infer<typeof testDocSchema>;
 
-export const balanceSchema = z.object({
-  id: z.string(),
-  uid: z.string(),
-  couponStream: z.number(),
-  numberOfCoupons: z.number(),
-  createdAt: timestampSchema,
-  updatedAt: timestampSchema,
-});
-
-const getBalanceByUid = async (p: { admin: typeof admin; uid: string }) => {
+const getTestDoc = async (p: { admin: typeof adminSdk; id: string }) => {
   try {
-    const initBalance = await p.admin.firestore().collection("balances").doc(p.uid).get();
+    const initDoc = await p.admin.firestore().collection(collectionNames.testDocs).doc(p.id).get();
 
-    return balanceSchema.safeParse(initBalance.data());
+    return testDocSchema.safeParse(initDoc.data());
   } catch (e) {
     const error = e as { message: string };
     return fail({ error });
   }
 };
 
-const setBalance = async (p: { admin: typeof admin; data: z.infer<typeof balanceSchema> }) => {
-  try {
-    await p.admin.firestore().collection("balances").doc(p.data.id).set(p.data);
-    return success({ data: undefined });
-  } catch (e) {
-    const error = e as { message: string };
-    return fail({ error });
-  }
-};
-
-const setPaymentIntentDoc = async (p: {
-  admin: typeof admin;
-  data: z.infer<typeof paymentIntentDocSchema>;
+const createTestDoc = async (p: {
+  admin: typeof adminSdk;
+  data: Pick<TTestDoc, "id" | "amount">;
 }) => {
   try {
     await p.admin
       .firestore()
-      .collection("paymentIntents")
+      .collection(collectionNames.testDocs)
       .doc(p.data.id)
-      .set({ ...p.data });
+      .set(adminCreatifyDoc({ ...p.data }));
     return success({ data: undefined });
   } catch (e) {
     const error = e as { message: string };
@@ -60,67 +42,4 @@ const setPaymentIntentDoc = async (p: {
   }
 };
 
-const setProcessedPaymentFromPaymentIntent = async (p: {
-  admin: typeof admin;
-  data: z.infer<typeof paymentIntentDocSchema>;
-}) => {
-  try {
-    await p.admin
-      .firestore()
-      .collection("processedPayments")
-      .doc(p.data.id)
-      .set({
-        ...p.data,
-        processedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-    return success({ data: undefined });
-  } catch (e) {
-    const error = e as { message: string };
-    return fail({ error });
-  }
-};
-
-const getProcessedPayment = async (p: {
-  admin: typeof admin;
-  id: string;
-}): Promise<TSuccessOrFail<z.infer<typeof paymentProcessedDocSchema>>> => {
-  try {
-    const getProcessedPaymentResponse = await p.admin
-      .firestore()
-      .collection("processedPayments")
-      .doc(p.id)
-      .get();
-
-    const processedPaymentResponse = paymentProcessedDocSchema.safeParse(
-      getProcessedPaymentResponse.data()
-    );
-
-    return processedPaymentResponse;
-  } catch (e) {
-    const error = e as { message: string };
-    return fail({ error });
-  }
-};
-
-const getPaymentIntentDoc = async (p: {
-  admin: typeof admin;
-  id: string;
-}): Promise<TSuccessOrFail<z.infer<typeof paymentIntentDocSchema>>> => {
-  try {
-    const getDocResponse = await p.admin.firestore().collection("paymentIntents").doc(p.id).get();
-
-    return paymentIntentDocSchema.safeParse(getDocResponse.data());
-  } catch (e) {
-    const error = e as { message: string };
-    return fail({ error });
-  }
-};
-
-export const adminFirestoreSdk = {
-  getPaymentIntentDoc,
-  setProcessedPaymentFromPaymentIntent,
-  getBalanceByUid,
-  getProcessedPayment,
-  setBalance,
-  setPaymentIntentDoc,
-};
+export const adminFirestoreSdk = { createTestDoc, getTestDoc };

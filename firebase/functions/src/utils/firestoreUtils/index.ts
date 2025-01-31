@@ -1,1 +1,1 @@
-export * from "./firestoreUtils";
+export * from "./adminFirestoreUtils";
