@@ -14,13 +14,9 @@ import { z } from "zod";
 import { fbTestUtils } from "../firebaseTestUtils";
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
 
-export type TDb = ReturnType<
-  ReturnType<RulesTestEnvironment["authenticatedContext"]>["firestore"]
->;
+export type TDb = ReturnType<ReturnType<RulesTestEnvironment["authenticatedContext"]>["firestore"]>;
 
-export const createSdk = <T1 extends { id: string }>(x: {
-  collectionName: string;
-}) => ({
+export const createSdk = <T1 extends { id: string }>(x: { collectionName: string }) => ({
   addDoc: (p: { db: TDb; data: T1 }) => {
     const collRef = collection(p.db, x.collectionName, p.data.id);
     return addDoc(collRef, p.data);
@@ -106,10 +102,7 @@ export const createSafeSdk = <T1 extends z.ZodObject<{ id: z.ZodString }>>(x: {
     },
     getDoc: getSafeDoc,
     getDocs: async (p: { db: TDb; queryConstraints: QueryConstraint[] }) => {
-      const q = query(
-        collection(p.db, x.collectionName),
-        ...p.queryConstraints
-      );
+      const q = query(collection(p.db, x.collectionName), ...p.queryConstraints);
       const docs = await getDocs(q);
 
       return z.array(x.schema).safeParse(docs.docs);
@@ -117,9 +110,7 @@ export const createSafeSdk = <T1 extends z.ZodObject<{ id: z.ZodString }>>(x: {
   };
 };
 
-export const createTestSdk = <T1 extends { id: string }>(x: {
-  collectionName: string;
-}) => ({
+export const createTestSdk = <T1 extends { id: string }>(x: { collectionName: string }) => ({
   addDoc: (p: { db: TDb; data: T1 }) => {
     const collRef = collection(p.db, x.collectionName, p.data.id);
     return fbTestUtils.isRequestGranted(addDoc(collRef, p.data));

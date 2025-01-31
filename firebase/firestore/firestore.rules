@@ -90,7 +90,7 @@ service cloud.firestore {
     }
     match /files/{id} {
       function getFileKeys(){
-        return ['id', 'uid', 'fileName', 'serializedEncryptionKeySalt', 'serializedInitializationVector', 'createdAt', 'updatedAt'];
+        return ['id', 'uid', 'fileName', 'encryptedFileName', 'serializedEncryptionKeySalt', 'serializedInitializationVector', 'createdAt', 'updatedAt'];
       }
       function checkFileDataTypes(){
         let incoming = getIncomingData();
@@ -101,6 +101,7 @@ service cloud.firestore {
           && incoming.id == getIncomingId()
           && incoming.uid == getIncomingAuth().uid
           && incoming.fileName is string
+          && incoming.encryptedFileName is string
           && incoming.serializedEncryptionKeySalt is string
           && incoming.serializedInitializationVector is string
           && incoming.createdAt is timestamp
