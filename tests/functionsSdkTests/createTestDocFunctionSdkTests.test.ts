@@ -10,7 +10,7 @@ let testEnv: RulesTestEnvironment;
 let email: string;
 const password = "test123";
 
-describe("createStripePaymentIntentFunctionsSdkTests", () => {
+describe("createTestDocFunctionSdkTests", () => {
   beforeAll(async () => {
     fbTestUtils.setDefaultLogLevel();
     testEnv = await fbTestUtils.createTestEnvironment({
@@ -20,7 +20,7 @@ describe("createStripePaymentIntentFunctionsSdkTests", () => {
     await createUserWithEmailAndPassword(auth, email, password);
   });
   beforeEach(async () => {
-    await testEnv.clearFirestore();
+    // await testEnv.clearFirestore();
   });
   afterEach(async () => {
     auth.signOut();
@@ -30,12 +30,12 @@ describe("createStripePaymentIntentFunctionsSdkTests", () => {
   });
   it("should return a success response", async () => {
     await signInWithEmailAndPassword(auth, email, password);
-    const result2 = await functionsSdk.createTestDoc({ id: "USD", amount: 100 });
+    const result2 = await functionsSdk.createTestDoc({ id: `id-${uuid()}`, amount: 100 });
     expect(result2.success).toBe(true);
   });
   it("should return a success response2", async () => {
     await signInWithEmailAndPassword(auth, email, password);
-    const result2 = await functionsSdk.createTestDoc({ id: "USD", amount: 100 });
+    const result2 = await functionsSdk.createTestDoc({ id: `id-${uuid()}`, amount: 100 });
     expect(result2.success).toBe(true);
   });
 });

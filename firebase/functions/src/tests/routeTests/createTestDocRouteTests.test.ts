@@ -15,7 +15,7 @@ describe("createTestDocRouteTests", () => {
   beforeAll(async () => {
     fbTestUtils.setDefaultLogLevel();
     testEnv = await fbTestUtils.createTestEnvironment({ projectId: firebaseConfig.projectId });
-    await testEnv.clearFirestore();
+    // await testEnv.clearFirestore();
   });
   beforeEach(async () => {});
   afterAll(async () => {
