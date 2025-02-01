@@ -71,3 +71,4 @@ build/Release
 caches/history/*
 !caches/history/.gitkeep
 **/service-account.json
+.DS_Store
