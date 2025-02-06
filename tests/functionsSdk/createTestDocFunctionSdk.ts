@@ -2,7 +2,7 @@ import { httpsCallable } from "@firebase/functions";
 import { Timestamp } from "@firebase/firestore";
 import z from "zod";
 import { functions } from "../config/firebaseInitialisations";
-import { fail, success } from "@/utils/devUtils";
+import { fail, success } from "../utils/devUtils";
 
 type TTimestamp = Timestamp;
 type TTimestampValue = Pick<TTimestamp, "seconds" | "nanoseconds">;

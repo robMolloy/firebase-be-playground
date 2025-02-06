@@ -9,12 +9,9 @@
     "sourceMap": true,
     "strict": true,
     "skipLibCheck": true,
-    "target": "es2017",
-    "paths": {
-      "@/*": ["./tests/*"]
-    }
+    "target": "es2017"
   },
   "compileOnSave": true,
-  "include": ["tests"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
