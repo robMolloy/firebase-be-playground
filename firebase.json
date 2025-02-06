@@ -1,7 +1,7 @@
 {
   "firestore": {
-    "rules": "firebase/firestore/firestore.rules",
-    "indexes": "firebase/firestore/firestore.indexes.json"
+    "rules": "firestore/firestore.rules",
+    "indexes": "firestore/firestore.indexes.json"
   },
   "functions": [
     {
@@ -15,7 +15,7 @@
     }
   ],
   "storage": {
-    "rules": "firebase/storage/storage.rules"
+    "rules": "storage/storage.rules"
   },
   "emulators": {
     "auth": {
