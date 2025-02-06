@@ -1,9 +1,9 @@
-import { auth } from "../config/firebaseInitialisations";
-import { fbTestUtils } from "../utils/firebaseTestUtils";
+import { auth } from "../../config/firebaseInitialisations";
+import { fbTestUtils } from "../../utils/firebaseTestUtils";
 import { RulesTestEnvironment } from "@firebase/rules-unit-testing";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { firebaseConfig } from "../config/firebaseConfig";
-import { functionsSdk } from "../functionsSdk";
+import { firebaseConfig } from "../../config/firebaseConfig";
+import { functionsSdk } from "../../functionsSdk";
 import { v4 as uuid } from "uuid";
 
 let testEnv: RulesTestEnvironment;
