@@ -4,7 +4,7 @@ import { admin } from "../../config/adminFirebaseInitialisations";
 import { firebaseConfig } from "../../config/firebaseConfig";
 import * as routes from "../../routes";
 import { createTestDocRouteHandler } from "../../routes/routeHandlers/createTestDocRouteHandler";
-import { fbTestUtils } from "../firebaseTestUtils";
+import { fbTestUtils } from "../../utils/firebaseTestUtils";
 import { v4 } from "uuid";
 
 let testEnv: RulesTestEnvironment;
@@ -15,9 +15,10 @@ describe("createTestDocRouteTests", () => {
   beforeAll(async () => {
     fbTestUtils.setDefaultLogLevel();
     testEnv = await fbTestUtils.createTestEnvironment({ projectId: firebaseConfig.projectId });
+  });
+  beforeEach(async () => {
     // await testEnv.clearFirestore();
   });
-  beforeEach(async () => {});
   afterAll(async () => {
     await testEnv.cleanup();
   });
