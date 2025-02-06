@@ -1,8 +1,8 @@
 import adminSdk from "firebase-admin";
 import z from "zod";
 import { fail, success } from "../utils/devUtils";
-import { timestampSchema } from "./adminFirestoreUtils";
-import { adminCreatifyDoc } from "../utils/firestoreUtils";
+import { timestampSchema } from "../utils/firestoreUtils/firestoreUtils";
+import { adminCreatifyDoc } from "./adminFirestoreUtils";
 
 const collectionNames = { testDocs: "testDocs" };
 
